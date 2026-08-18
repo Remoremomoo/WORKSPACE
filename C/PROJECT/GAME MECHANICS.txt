@@ -1,0 +1,33 @@
+🎰 Arithmetic Pachinko Game (Hakari-Inspired) 
+1️⃣ Core Concept Ang game ay inspired sa Kinji Hakari Domain Expansion, kung saan parang slot/pachinko machine ang mechanics. Instead na pure luck lang, may skill component (arithmetic questions) na nag-iincrease ng luck percentage ng player. 
+Goal ng player: 👉 Makakuha ng pinakamataas na points sa leaderboard. 
+
+🎮 Game Flow Step 1 — Login / Register Player must: Register account Login to play Purpose: 
+Track scores Display leaderboard 
+
+Step 2 — Start Game Round Bawat round ay may 3 scenarios (parang 3 slot reels). 
+Example visual: [ ? ] [ ? ] [ ? ] Scenario1 Scenario2 Scenario3 
+🎯 Scenario System Starting Luck Bawat scenario nagsisimula sa: Luck = 10% Arithmetic Phase Bawat scenario may 3 arithmetic questions. 
+Randomly generated: addition (+) subtraction (-) multiplication (*) division (/) Example: 12 + 8 = ? 15 × 3 = ? 40 ÷ 5 = ? Luck Increase Every correct answer: +30% luck 
+Example: Correct Answers Luck 0 10% 1 40% 2 70% 3 100% 
+
+🎲 Number Generation (Luck System) After answering the 3 questions, the game generates one number (1–9). 
+Rule If: luck == 100 then: number = 7 Guaranteed jackpot number for that scenario. If luck < 100: Generate random number 1–100 roll = rand()%100 + 1 
+If: roll <= luck then: number = 7 
+Otherwise: number = random number (1–9) 
+Meaning: Higher luck = higher chance of getting 7 But 7 can still appear randomly even with low luck 
+
+🧮 Scoring System Each generated number has points. Number Points 7 1000 6 or 8 800 5 or 9 600 4 500 3 400 2 300 1 200 
+
+🏆 Final Score Calculation After the 3 scenarios, you will have something like: Scenario 1 → 7 Scenario 2 → 5 Scenario 3 → 8 Points: 7 = 1000 5 = 600 8 = 800 
+Final Score: Total = 2400 points 
+
+💰 Jackpot Condition If the result is: 7 7 7 Then: Score = 3000 points This is the maximum possible score. 
+🥇 Leaderboard System Leaderboard stores: Username Score Date Sorted by: 
+Highest Score Example leaderboard: Rank Player Score 1 Alex 3000 2 Marco 2800 3 Remos 2600 
+
+🔁 Full Game Loop Login/Register ↓ Start Game ↓ Scenario 1 - 3 math questions - calculate luck - generate number ↓ Scenario 2 ↓ Scenario 3 ↓ Calculate Total Score ↓ Update Leaderboard ↓ Play Again / Exit 
+
+⭐ Why This Design is Good Your system balances skill and luck: Skill: Answering math questions increases luck Luck: Final number generation Reward: High scores and leaderboard competition So hindi siya pure RNG, which makes the game more engaging. 
+
+💡 Suggestion ko (para mas cool pa): Pwede kang maglagay ng visual slot machine animation: [ spinning ] [ spinning ] [ spinning ] → 7 5 8 Mas magiging Hakari pachinko vibe talaga. 
