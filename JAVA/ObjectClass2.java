@@ -5,6 +5,12 @@ public class ObjectClass2{
     String brand, camera, os, screen, speaker, chargingPort, processor;
     int storage, price, ram;
 
+    ObjectClass2(String brand){
+        this.brand = brand;
+        System.out.println("Phone: " + this.brand);
+        System.out.println("Status: Browsing only");
+    }
+
     ObjectClass2(String brand, int price){
         this.brand = brand;
         this.price = price;
@@ -21,6 +27,21 @@ public class ObjectClass2{
         System.out.println("Price: " + this.price);
         System.out.println("Storage: " + this.storage + "GB");
         System.out.println("RAM: " + this.ram + "GB");
+    }
+
+    ObjectClass2(String brand, int price, int storage, int ram, String camera, String screen){
+        this.brand = brand;
+        this.price = price;
+        this.storage = storage;
+        this.ram = ram;
+        this.camera = camera;
+        this.screen = screen;
+        System.out.println("Phone: " + this.brand);
+        System.out.println("Price: " + this.price);
+        System.out.println("Storage: " + this.storage + "GB");
+        System.out.println("RAM: " + this.ram + "GB");
+        System.out.println("Camera: " + this.camera);
+        System.out.println("Screen: " + this.screen);
     }
 
     ObjectClass2(String brand, int price, int storage, int ram, String camera, String screen, String speaker, String chargingPort, String processor, String os){
@@ -179,45 +200,62 @@ public class ObjectClass2{
         System.out.println("Brand Name: ");
         String brand = sc.nextLine();
 
-        System.out.println("Price (in Peso): ");
-        int price = Integer.parseInt(sc.nextLine());
-
-        System.out.println("Add specs? [y/n]: ");
-        String addSpecs = sc.nextLine();
+        System.out.println("Add price? [y/n]: ");
+        String addPrice = sc.nextLine();
 
         ObjectClass2 ptr;
 
-        if(addSpecs.equalsIgnoreCase("n")){
-            ptr = new ObjectClass2(brand, price);
+        if(addPrice.equalsIgnoreCase("n")){
+            ptr = new ObjectClass2(brand);
         }
         else{
-            System.out.println("Storage (in GB): ");
-            int storage = Integer.parseInt(sc.nextLine());
+            System.out.println("Price (in Peso): ");
+            int price = Integer.parseInt(sc.nextLine());
 
-            System.out.println("RAM (in GB): ");
-            int ram = Integer.parseInt(sc.nextLine());
+            System.out.println("Add specs? [y/n]: ");
+            String addSpecs = sc.nextLine();
 
-            System.out.println("Add full details? [y/n]: ");
-            String addFull = sc.nextLine();
-
-            if(addFull.equalsIgnoreCase("n")){
-                ptr = new ObjectClass2(brand, price, storage, ram);
+            if(addSpecs.equalsIgnoreCase("n")){
+                ptr = new ObjectClass2(brand, price);
             }
             else{
-                System.out.println("Camera: ");
-                String camera = sc.nextLine();
-                System.out.println("Screen: ");
-                String screen = sc.nextLine();
-                System.out.println("Speaker: ");
-                String speaker = sc.nextLine();
-                System.out.println("Charging Port: ");
-                String chargingPort = sc.nextLine();
-                System.out.println("Processor: ");
-                String processor = sc.nextLine();
-                System.out.println("Operating System: ");
-                String os = sc.nextLine();
+                System.out.println("Storage (in GB): ");
+                int storage = Integer.parseInt(sc.nextLine());
 
-                ptr = new ObjectClass2(brand, price, storage, ram, camera, screen, speaker, chargingPort, processor, os);
+                System.out.println("RAM (in GB): ");
+                int ram = Integer.parseInt(sc.nextLine());
+
+                System.out.println("Add camera and screen details? [y/n]: ");
+                String addCamScreen = sc.nextLine();
+
+                if(addCamScreen.equalsIgnoreCase("n")){
+                    ptr = new ObjectClass2(brand, price, storage, ram);
+                }
+                else{
+                    System.out.println("Camera: ");
+                    String camera = sc.nextLine();
+                    System.out.println("Screen: ");
+                    String screen = sc.nextLine();
+
+                    System.out.println("Add full details? [y/n]: ");
+                    String addFull = sc.nextLine();
+
+                    if(addFull.equalsIgnoreCase("n")){
+                        ptr = new ObjectClass2(brand, price, storage, ram, camera, screen);
+                    }
+                    else{
+                        System.out.println("Speaker: ");
+                        String speaker = sc.nextLine();
+                        System.out.println("Charging Port: ");
+                        String chargingPort = sc.nextLine();
+                        System.out.println("Processor: ");
+                        String processor = sc.nextLine();
+                        System.out.println("Operating System: ");
+                        String os = sc.nextLine();
+
+                        ptr = new ObjectClass2(brand, price, storage, ram, camera, screen, speaker, chargingPort, processor, os);
+                    }
+                }
             }
         }
 
