@@ -7,14 +7,17 @@
 #define FILENAME "D:\\User_Account.txt"
 using namespace std;
 
+pin = 1234
+pin = 9012
+
 string caesar(string code, int numShift){
-        for(int i = 0; i < code.length(); i++){
-            int digit = code[i] - '0';
-            digit = (digit + numShift) % 10;
-            code[i] = digit + '0';
-        }
-        return code;
+    for(int i = 0; i < code.length(); i++){
+        int digit = code[i] - '0';
+        digit = (digit + numShift) % 10;
+        code[i] = digit + '0';
     }
+    return code;
+}
 
 struct Account{
     private:
@@ -125,7 +128,17 @@ void ATM :: retrieveAccountFile(){
     string line;
     while(getline(inFile, line)){
         stringstream ss(line);
-        string num, name, bday, cont, pin;
+        string num, name, bday, cont, pin, decrypt;
+        float bal;
+        
+        getline(ss, num, ",");
+        getline(ss, name, ",");
+        getline(ss, bday, ",");
+        getline(ss, cont, ",");
+        getline(ss, pin, ",");
+        getline(ss, bal, ",");
+
+        decrypt = caesar(pin, 2);
         
     }
 }
