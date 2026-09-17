@@ -98,8 +98,9 @@ class ATM{
     void saveMaster();
     void retrieveMaster();
     bool userDetectAccount();
+    bool pinChecker(string pinCheck);
     void insertData(Account* newNode);
-    void regAcc(string aN, string n, string birth, string contact, string pn, float Dep);
+    bool regAcc(string aN, string n, string birth, string contact, string pn, float Dep);
     void writeAccountFile();
     bool retrieveAccountFile();
     float balanceInquiry();
@@ -155,6 +156,23 @@ void ATM :: retrieveMaster(){
     }
 }
 
+bool ATM :: pinChecker(string pinCheck){
+    if(pinCheck.length() < 4 || pinCheck.length() > 6){
+        return false;
+    }
+    for(int i = 0; i < pinCheck.length(); i++){
+        int digit = pinCheck[i] - '0';
+        if(digit < 0 || digit > 9){
+            return false;
+        }
+        else{
+            continue;
+        }
+    }
+    return true;
+
+}
+
 bool ATM :: userDetectAccount(){
     ifstream inFile(FILENAME);
     if(inFile){
@@ -178,11 +196,22 @@ void ATM :: insertData(Account* newNode){
         tail->prev = temp;
     }
 }
-void ATM :: regAcc(string aN, string n, string birth, string contact, string pn, float Dep){
-    Account* newNode = new Account(aN, n, birth, contact, pn, Dep);
-    insertData(newNode);
-    writeAccountFile();
-    saveMaster();
+bool ATM :: regAcc(string aN, string n, string birth, string contact, string pn, float Dep){
+    if(pinChecker(pn) == true){
+        if(Dep >= 5000){
+            Account* newNode = new Account(aN, n, birth, contact, pn, Dep);
+            insertData(newNode);
+            writeAccountFile();
+            saveMaster();
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    else{
+        return false;
+    }
 }
 void ATM :: writeAccountFile(){
     ofstream outFile(FILENAME);
@@ -246,7 +275,7 @@ float ATM :: balanceInquiry(){
     return cur->getBal();
 }
 bool ATM :: withdraw(float am, string pn){
-    if(am >= 100 && current->getBal() >= am && (int)am % 100 == 0){
+    if(am >= 100 && current->getBal() >= am && (int)am % 100 == 0){ //lipat sa main //while (am < 100 && current->getBal() < am && (int)am % 100 != 0)
         if(current->verifyPIN(pn) == true){
             float curBal = current->getBal() - am;
             current->setBal(curBal);
@@ -263,7 +292,7 @@ bool ATM :: withdraw(float am, string pn){
     }
 }
 bool ATM :: deposit(float am, string pn){
-    if(am > 0){
+    if(am > 0){//lipat sa main //while(am <= 0)
         if(current->verifyPIN(pn) == true){
             float bal = current->getBal() + am;
             current->setBal(bal);
@@ -282,7 +311,7 @@ bool ATM :: deposit(float am, string pn){
 bool ATM :: transfer(string destNum, float am, string pn){
     Account* dest = locate(destNum);
     if(dest != nullptr){
-        if(am >= 100 && current->getBal() >= am && (int)am % 100 == 0){
+        if(am >= 100 && current->getBal() >= am){//lipat sa main//while (am < 100 && current->getBal() < am)
             if(current->verifyPIN(pn) == true){
                 float bal = current->getBal() - am;
                 current->setBal(bal);
@@ -306,11 +335,16 @@ bool ATM :: transfer(string destNum, float am, string pn){
 }
 bool ATM :: pinChange(string pn, string newPIN, string newPIN1){
     if(current->verifyPIN(pn) == true){
-        if(newPIN == newPIN1){
-            current->setPIN(newPIN);
-            writeAccountFile();
-            saveMaster();
-            return true;
+        if(pinChecker(newPIN) == true){
+            if(newPIN == newPIN1){
+                current->setPIN(newPIN);
+                writeAccountFile();
+                saveMaster();
+                return true;
+            }
+            else{
+                return false;
+            }
         }
         else{
             return false;
