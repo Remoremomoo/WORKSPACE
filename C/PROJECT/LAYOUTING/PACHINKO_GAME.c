@@ -26,7 +26,7 @@ void gotoxy (int x, int y);
 void leaderboard();
 void menu();
 void ui();
-int question();
+int question(int *opType);
 int scenario(int *r, int *opType);
 int numberRoll(int luck);
 int scoring(int x);
