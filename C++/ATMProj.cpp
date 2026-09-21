@@ -557,21 +557,35 @@ int main() {
         }
         
         bool activeSession = true;
+        int option = 0;
         while (activeSession) {
             system("cls");
-            gotoxy(10, 3); cout << "******** > ATM TRANSACTION MENU < ********";
-            gotoxy(10, 5); cout << "[1] Balance Inquiry";
-            gotoxy(10, 6); cout << "[2] Withdraw Cash";
-            gotoxy(10, 7); cout << "[3] Deposit Cash";
-            gotoxy(10, 8); cout << "[4] Fund Transfer";
-            gotoxy(10, 9); cout << "[5] Change PIN Code";
-            gotoxy(10, 10); cout << "[6] Exit & Eject Card";
-            gotoxy(10, 12); cout << "Select Option: ";
+            gotoxy(10, 5);  cout << (option == 0 ? " > [1] Balance Inquiry"   : "   [1] Balance Inquiry");
+            gotoxy(10, 6);  cout << (option == 1 ? " > [2] Withdraw Cash"      : "   [2] Withdraw Cash");
+            gotoxy(10, 7);  cout << (option == 2 ? " > [3] Deposit Cash"       : "   [3] Deposit Cash");
+            gotoxy(10, 8);  cout << (option == 3 ? " > [4] Fund Transfer"      : "   [4] Fund Transfer");
+            gotoxy(10, 9);  cout << (option == 4 ? " > [5] Change PIN Code"    : "   [5] Change PIN Code");
+            gotoxy(10, 10); cout << (option == 5 ? " > [6] Exit & Eject Card"  : "   [6] Exit & Eject Card");
+            gotoxy(10, 12); cout << "Use UP/DOWN arrow keys and press ENTER to select.";
 
-            char choice = _getch();
+            int key = _getch();
             
-            switch (choice) {
-                case '1': {
+            if (key == 224 || key == 0) { 
+                key = _getch();
+                if (key == 72) {
+                    option--;
+                    if (option < 0) option = 5; 
+                }
+                else if (key == 80) { 
+                    option++;
+                    if (option > 5) option = 0; 
+                }
+                continue; 
+            }
+            
+            if (key == 13) { //ENTER key
+            	switch (option + 1) {
+                case 1: {
                     system("cls");
                     stringstream ss;
                     ss << fixed << setprecision(2) << atmSystem.balanceInquiry();
@@ -579,7 +593,7 @@ int main() {
                     break;
                 }
 
-                case '2': {
+                case 2: {
                     float am;
                     system("cls");
                     gotoxy(10, 4); cout << "******** > CASH WITHDRAWAL < ********";
@@ -614,7 +628,7 @@ int main() {
                     break;
                 }
 
-                case '3': {
+                case 3: {
                     float am;
                     system("cls");
                     gotoxy(10, 4); cout << "******** > CASH DEPOSIT < ********";
@@ -649,7 +663,7 @@ int main() {
                     break;
                 }
 
-                case '4': {
+                case 4: {
                     string destAcc;
                     float am;
                     system("cls");
@@ -690,7 +704,7 @@ int main() {
                     break;
                 }
 
-                case '5': {
+                case 5: {
                     system("cls");
                     gotoxy(10, 4); cout << "******** > CHANGE PIN CODE < ********";
                     gotoxy(10, 6); cout << "Current PIN : "; string oldPin = getMaskedPIN();
@@ -706,7 +720,7 @@ int main() {
                     break;
                 }
 
-                case '6':
+                case 6:
                     system("cls");
                     gotoxy(10, 5); cout << "Please eject/unplug your card drive...";
                     while(Drive() != ""){
@@ -725,4 +739,5 @@ int main() {
             }
     	}
 	}
+}
 }

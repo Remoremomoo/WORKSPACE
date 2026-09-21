@@ -32,7 +32,7 @@ public class NumberSystemCalculator{
         }
         return s;
     }
-    
+
     static int compareBinary(String a, String b){
         a = removeZeroes(a);
         b = removeZeroes(b);
@@ -77,7 +77,7 @@ public class NumberSystemCalculator{
 
         int width;
         if(base == 8){
-                width = 3;
+            width = 3;
         }
         else{
             width = 4;
@@ -138,13 +138,6 @@ public class NumberSystemCalculator{
         return removeZeroes(result);
     }
 
-    static String subtractBinary(String a, String b){
-        if(compareBinary(a, b) >= 0){
-            return subtractRaw(a, b);
-        }
-        return "-" + subtractRaw(b, a);
-    }
-
     static String multiplyBinary(String a, String b){
         String result = "0";
         int shift = 0;
@@ -167,7 +160,6 @@ public class NumberSystemCalculator{
         String remainder = "0";
 
         for(int i = 0; i < a.length(); i++){
-            // ibaba ang susunod na bit ni a
             remainder = removeZeroes(remainder + a.charAt(i));
 
             if(compareBinary(remainder, b) >= 0){
@@ -185,7 +177,7 @@ public class NumberSystemCalculator{
         return removeZeroes(quotient);
     }
 
-    static String convertFromBinaryPositive(String binary, int toBase){
+    static String convertFromBinary(String binary, int toBase){
         if(toBase == 2){
             return binary;
         }
@@ -220,13 +212,6 @@ public class NumberSystemCalculator{
         return removeZeroes(convertPrint);
     }
 
-    static String convertFromBinary(String binary, int toBase){
-        if(binary.charAt(0) == '-'){
-            return "-" + convertFromBinaryPositive(binary.substring(1), toBase);
-        }
-        return convertFromBinaryPositive(binary, toBase);
-    }
-    
     static boolean quiz(Scanner sc){
         int[] bases = {2, 8, 10, 16};
 
@@ -247,6 +232,78 @@ public class NumberSystemCalculator{
         return reply.equals(answer);
     }
 
+    static boolean arithmetic(Scanner sc){
+        System.out.print("1st number base (2/8/10/16): ");
+        int base1 = sc.nextInt();
+        System.out.print("1st number: ");
+        String n1 = sc.next().toUpperCase();
+
+        System.out.print("2nd number base (2/8/10/16): ");
+        int base2 = sc.nextInt();
+        System.out.print("2nd number: ");
+        String n2 = sc.next().toUpperCase();
+
+        System.out.print("Operation (+, -, *, /): ");
+        char op = sc.next().charAt(0);
+
+        String bin1 = convertToBinary(n1, base1);
+        String bin2 = convertToBinary(n2, base2);
+
+        String stored;
+        String storedRemainder = "";
+
+        if(op == '+'){
+            stored = addBinary(bin1, bin2);
+        }
+        else if(op == '-'){
+            if(compareBinary(bin1, bin2) < 0){
+                System.out.println("Result would be negative!");
+                return false;
+            }
+            stored = subtractRaw(bin1, bin2);
+        }
+        else if(op == '*'){
+            stored = multiplyBinary(bin1, bin2);
+        }
+        else if(op == '/'){
+            if(bin2.equals("0")){
+                System.out.println("Cannot divide by zero!");
+                return false;
+            }
+            stored = divideBinary(bin1, bin2, false);
+            storedRemainder = divideBinary(bin1, bin2, true);
+        }
+        else{
+            System.out.println("Invalid operation!");
+            return false;
+        }
+
+        System.out.print("Show result in base (2/8/10/16): ");
+        int outBase = sc.nextInt();
+
+        if(op == '/'){
+            System.out.println("Quotient:  " + convertFromBinary(stored, outBase));
+            System.out.println("Remainder: " + convertFromBinary(storedRemainder, outBase));
+        }
+        else{
+            System.out.println("Result: " + convertFromBinary(stored, outBase));
+        }
+        return true;
+    }
+
+    static void convertOnly(Scanner sc){
+        System.out.print("Number base (2/8/10/16): ");
+        int fromBase = sc.nextInt();
+        System.out.print("Number: ");
+        String n = sc.next().toUpperCase();
+
+        System.out.print("Convert to base (2/8/10/16): ");
+        int toBase = sc.nextInt();
+
+        String bin = convertToBinary(n, fromBase);
+        System.out.println("Result: " + convertFromBinary(bin, toBase));
+    }
+
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
         int trialsLeft = 3;
@@ -265,60 +322,27 @@ public class NumberSystemCalculator{
             }
 
             System.out.println("\nTrials left: " + trialsLeft);
+            System.out.println("1 - Arithmetic");
+            System.out.println("2 - Convert only");
+            System.out.print("Choice: ");
+            int choice = sc.nextInt();
 
-            System.out.print("1st number base (2/8/10/16): ");
-            int base1 = sc.nextInt();
-            System.out.print("1st number: ");
-            String n1 = sc.next().toUpperCase();
-
-            System.out.print("2nd number base (2/8/10/16): ");
-            int base2 = sc.nextInt();
-            System.out.print("2nd number: ");
-            String n2 = sc.next().toUpperCase();
-
-            System.out.print("Operation (+, -, *, /): ");
-            char op = sc.next().charAt(0);
-
-            String bin1 = convertToBinary(n1, base1);
-            String bin2 = convertToBinary(n2, base2);
-
-            String stored;
-            String storedRemainder = "";
-
-            if(op == '+'){
-                stored = addBinary(bin1, bin2);
+            boolean done;
+            if(choice == 1){
+                done = arithmetic(sc);
             }
-            else if(op == '-'){
-                stored = subtractBinary(bin1, bin2);
-            }
-            else if(op == '*'){
-                stored = multiplyBinary(bin1, bin2);
-            }
-            else if(op == '/'){
-                if(bin2.equals("0")){
-                    System.out.println("Cannot divide by zero!");
-                    continue;
-                }
-                stored = divideBinary(bin1, bin2, false);
-                storedRemainder = divideBinary(bin1, bin2, true);
+            else if(choice == 2){
+                convertOnly(sc);
+                done = true;
             }
             else{
-                System.out.println("Invalid operation!");
+                System.out.println("Invalid choice!");
                 continue;
             }
 
-            System.out.print("Show result in base (2/8/10/16): ");
-            int outBase = sc.nextInt();
-
-            if(op == '/'){
-                System.out.println("Quotient:  " + convertFromBinary(stored, outBase));
-                System.out.println("Remainder: " + convertFromBinary(storedRemainder, outBase));
+            if(done){
+                trialsLeft--;
             }
-            else{
-                System.out.println("Result: " + convertFromBinary(stored, outBase));
-            }
-
-            trialsLeft--;
         }
     }
 }
