@@ -602,13 +602,13 @@ int main() {
                         gotoxy(10, 6); cout << "Enter Amount (Multiples of 100): P";
                         cin >> am;
 
-                        if (am < 100 || am > atmSystem.balanceInquiry() || (int)am % 100 != 0) {
+                        if (am < 100 || am > atmSystem.balanceInquiry() || am != (int)am || (int)am % 100 != 0) {
                             gotoxy(10, 8); cout << "Invalid Amount/Insufficient Balance! Try again.";
                             Sleep(1200);
                             gotoxy(10, 8); cout << "                                                ";
                             gotoxy(44, 6); cout << "               ";
                         }
-                    } while (am < 100 || am > atmSystem.balanceInquiry() || (int)am % 100 != 0);
+                    } while (am < 100 || am > atmSystem.balanceInquiry() || am != (int)am || (int)am % 100 != 0);
 
                     string pin;
                     if (atmSystem.verifyTransactionPIN(7, pin)) {
